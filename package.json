@@ -26,6 +26,7 @@
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/swagger": "^6.1.2",
     "@ntegral/nestjs-sentry": "^3.0.7",
     "@sentry/node": "^7.13.0",
     "dogapi": "^2.8.4",
