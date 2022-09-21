@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: musicbook-be-k8s
-        image: 597014485214.dkr.ecr.ap-northeast-2.amazonaws.com/musicbook-be-k8s:latest
+        image: public.ecr.aws/u3z1r1m7/musicbook-be-k8s:latest
         imagePullPolicy: Always
         resources:
           limits:
