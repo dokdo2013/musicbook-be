@@ -18,6 +18,8 @@ spec:
       labels:
         app: musicbook-be-k8s
     spec:
+      imagePullSecrets:
+      - name: aws-secret
       containers:
       - name: musicbook-be-k8s
         image: 597014485214.dkr.ecr.ap-northeast-2.amazonaws.com/musicbook-be-k8s:latest
@@ -29,8 +31,57 @@ spec:
           requests:
             cpu: "0.2"
             memory: 128Mi
-      imagePullSecrets:
-      - name: aws-secret
+        env:
+        - name: DATADOG_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DATADOG_API_KEY
+        - name: DATADOG_APP_KEY
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DATADOG_APP_KEY
+        - name: DB_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_HOSTNAME
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_PASSWORD
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_DATABASE
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_PORT
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: REDIS_PORT
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: SENTRY_DSN
 
 ---
 apiVersion: v1
