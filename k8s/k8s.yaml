@@ -30,7 +30,7 @@ spec:
             cpu: "0.2"
             memory: 128Mi
       imagePullSecrets:
-      - name: secret-registry
+      - name: regcred
 
 ---
 apiVersion: v1
