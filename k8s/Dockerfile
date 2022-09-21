@@ -3,7 +3,7 @@ FROM node:lts AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY ../ /app
 
 RUN yarn install
 RUN yarn build
@@ -15,6 +15,6 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
-COPY --from=builder /app ./
+COPY --from=builder /app ../
 
 CMD ["yarn", "start:prod"]
