@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: musicbook-be-k8s-svcaccount
+  labels:
+    app: musicbook-be-k8s
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: musicbook-be-k8s
+  namespace: musicbook
+spec:
+  selector:
+    matchLabels:
+      app: musicbook-be-k8s
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  template:
+    metadata:
+      labels:
+        app: musicbook-be-k8s
+    spec:
+      containers:
+      - name: musicbook-be-k8s
+        image: 597014485214.dkr.ecr.ap-northeast-2.amazonaws.com/musicbook-be-k8s:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: "0.2"
+            memory: 128Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: musicbook-be-k8s-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5500
+      targetPort: 5500
+  selector:
+    app: musicbook-be-k8s
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: musicbook-be-k8s-ingress
+  namespace: musicbook
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: musicbook-be-k8s-svc
+            port:
+              number: 5500
+    host: musicbook-be-k8s.k8s.haenu.xyz
