@@ -38,7 +38,7 @@ jobs:
         ECR_REPOSITORY: musicbook-be-k8s
         IMAGE_TAG: ${{ steps.current-time.outputs.formattedTime }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./k8s
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f k8s/Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     - name: Build, tag, and push image to Amazon ECR (latest tag)
@@ -47,7 +47,7 @@ jobs:
         ECR_REPOSITORY: musicbook-be-k8s
         IMAGE_TAG: latest
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./k8s
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f k8s/Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     - uses: rickstaa/action-create-tag@v1
