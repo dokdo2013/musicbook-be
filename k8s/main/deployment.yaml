@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: musicbook-be-k8s
+  namespace: musicbook
+spec:
+  selector:
+    matchLabels:
+      app: musicbook-be-k8s
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  template:
+    metadata:
+      labels:
+        app: musicbook-be-k8s
+    spec:
+      imagePullSecrets:
+      - name: aws-secret
+      containers:
+      - name: musicbook-be-k8s
+        image: 597014485214.dkr.ecr.ap-northeast-2.amazonaws.com/musicbook-be-k8s:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: "0.2"
+            memory: 128Mi
+        env:
+        - name: DATADOG_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DATADOG_API_KEY
+        - name: DATADOG_APP_KEY
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DATADOG_APP_KEY
+        - name: DB_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_HOSTNAME
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_PASSWORD
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_DATABASE
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: DB_PORT
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: REDIS_PORT
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: musicbook-be-k8s-secrets
+              key: SENTRY_DSN

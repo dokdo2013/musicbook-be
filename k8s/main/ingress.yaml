@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: musicbook-be-k8s-ingress-api
+  namespace: musicbook
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+  - host: musicbook-be-k8s.k8s.haenu.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: musicbook-be-k8s-svc
+            port:
+              number: 5500
+  - host: api-k8s.musicbook.tv
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: musicbook-be-k8s-svc
+            port:
+              number: 5500
+    
